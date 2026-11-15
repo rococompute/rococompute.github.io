@@ -17,12 +17,12 @@
       <pre><code class="language-typescript">const f = x => x * x; // valid TypeScript
 
 const g = (x: number): number => x * x; // also valid TypeScript</code></pre>
-      <p>With dependent types, this looks like (N references natural numbers):</p>
+      <p>With dependent types, this looks like (`N` references <a href="https://en.wikipedia.org/wiki/Natural_number">natural numbers</a> and `Z` references <a href="https://en.wikipedia.org/wiki/Integer">integers</a>):</p>
       <pre><code class="language-soma">square (x : Any) : N := x * x.
 
 square 12%N.           (* 144%N *)
-square (-3)%Z.         (* run-time error: expected an N, but got (-3)%Z : Z *)</code></pre>
-      <p>Specifying the argument to be a natural number turns <code>square (-3)%Z</code> into a compile-time error (since Z is casting to an integer).</p>
+square (-3)%Z.         (* gives a run-time error *)</code></pre>
+      <p>Specifying the argument to be a natural number turns <code>square (-3)%Z</code> into instead a compile-time error.</p>
       <pre><code class="language-soma">typed_square (x : N) : N := x * x.
 
 typed_square 123.      (* 15129%N *)</code></pre>
