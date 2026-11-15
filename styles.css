@@ -21,3 +21,32 @@ body {
     max-width: 650px;
     padding: 0 25px;
 }
+
+pre, code {
+    font-family: inherit;
+}
+
+#content > pre {
+    box-sizing: border-box;
+    width: calc(100% - 50px);
+    padding: 12px 16px;
+    overflow-x: auto;
+    background: #f6f8fa;
+    border-radius: 4px;
+}
+
+/* highlight.js: soma (js/soma.js) and typescript */
+.hljs-comment { color: #636c76; }
+.hljs-keyword { color: #7c3aed; }
+.hljs-built_in { color: #c2410c; }
+.hljs-type, .hljs-attr { color: #0e7490; }
+.hljs-title.function_, .hljs-title { color: #1d4ed8; }
+.hljs-string { color: #15803d; }
+.hljs-number, .hljs-literal, .hljs-meta { color: #b45309; }
+.hljs-operator { color: #57606a; }
+
+p code {
+    background: #f6f8fa;
+    padding: 0 4px;
+    border-radius: 3px;
+}
