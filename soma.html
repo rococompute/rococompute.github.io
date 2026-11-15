@@ -1,12 +1,32 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>pantheon</title>
+    <title>soma</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
     <div id="content">
-      <h1>gradually dependently typed language</h1>
+      <h1>soma</h1>
+      <p>Dynamically typed languages, where you don't need to tell the computer whether a variable is a number or a string, are good for expressiveness and readability. However, being sure of certain properties requires tools like static analysis in your application code or representing abstracted states with formal verification. Eventually, the repo looks less like the codification of business logic and gets a similar smell to a codebase with countless microservices, which defeats the original benefit of an expressivelanguage.</p>
+      <p>On the other end of the typing spectrum, are dependently typed languages (some examples include Lean, Rocq, Agda, Idris, F*). While historically used for proving mathematical statements, there's a powerful comparison to the developer experience in static typed languages like. In languages like Rust or Haskell, once it compiles, the program accomplishes what was written. In dependently typed languages, once it compiles, the program implies a truthiness about the program that was written. In the past, this didn't go mainstream beyond academic applications due to the verbosity required.</p>
+      <p>To redemy this, let's take a lesson from TypeScript and how JavaScript (even untyped!) works as valid TypeScript:</p>
+      <pre><code>const f = x => x * x; // valid TypeScript
+
+const g = (x: number): number => x * x; // also valid TypeScript</code></pre>
+      <p>With dependent types, this looks like (N references natural numbers):</p>
+      <pre><code>square (x : Any) : N := x * x.
+
+square 12%N.           (* 144%N *)
+square (-3)%Z.         (* run-time error: expected an N, but got (-3)%Z : Z *)</code></pre>
+      <p>Specifying the argument to be a natural number turns `square (-3)%Z` into a compile-time error (since Z is casting to an integer).</p>
+      <pre><code>typed_square (x : N) : N := x * x.
+
+typed_square 123.      (* 15129%N *)</code></pre>
+      <p>Specifying the argument even further to be an even natural number catches more compile-time errors; being able to work with a type that's restrictive of the value itself is a benefit of dependent types.</p>
+      <pre><code>gradually_typed_square (x : N) (even : N.even x = true) : N := x * x.
+
+gradually_typed_square 2048 eq_refl.   (* 4194304%N *)
+gradually_typed_square 123 eq_refl.    (* rejected: 123 isn't even *)</code></pre>
     </div>
   </body>
 </html>
