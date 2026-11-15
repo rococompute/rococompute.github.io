@@ -1,0 +1,23 @@
+@font-face {
+    font-family: 'DepartureMono';
+    src: url('fonts/DepartureMono-Regular.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+body {
+    font-family: 'DepartureMono';
+}
+
+#content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#content > * {
+    max-width: 650px;
+    padding: 0 25px;
+}
