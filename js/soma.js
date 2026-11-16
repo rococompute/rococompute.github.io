@@ -4,7 +4,7 @@
   Soma is Rocq's language (Gallina and its commands) with additions:
   definitions with no keyword (`square (x : N) : N := x * x.`), Recursive
   and Explore, the gradual typing words (Any, unk, raise, cast), and
-  numbers with a scope (`12%N`, `(-3)%Z`). Rocq's notations, Soma's .lang
+  numbers with a scope (`12%N`, `(-3)%Z`). Rocq's notations, Soma's .ext
   macros and JSX change the syntax as a file is read, so a fixed grammar
   like this one only colours what it can see: comments, strings, keywords,
   definitions, numbers and scopes.
