@@ -19,7 +19,7 @@ const f = x => x * x;
 
 // also valid TypeScript
 const g = (x: number): number => x * x;</code></pre>
-      <p>With dependent types, this looks like (`N` references <a href="https://en.wikipedia.org/wiki/Natural_number">natural numbers</a> and `Z` references <a href="https://en.wikipedia.org/wiki/Integer">integers</a>):</p>
+      <p>With dependent types, this looks like (<b>N</b> references <a href="https://en.wikipedia.org/wiki/Natural_number">natural numbers</a> and <b>Z</b> references <a href="https://en.wikipedia.org/wiki/Integer">integers</a>):</p>
       <pre><code class="language-soma">square (x : Any) : N := x * x.
 
 square 12%N.           (* 144%N *)
