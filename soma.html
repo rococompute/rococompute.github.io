@@ -51,7 +51,7 @@ typed_square 123.      (* 15129%N *)</code></pre>
 
 gradual_square 2048.   (* 4194304%N *)
 gradual_square 123.    (* rejected *)</code></pre>
-      <p>As you can see, we were able to incrementally specify what the program was doing from squaring a value to squaring an even number; this is what's meant by "gradual dependent types".</p>
+      <p>As you can see, we were able to incrementally specify what the program was doing from squaring an arbitrary value to squaring a number that&apos;s <i>even</i>; this is what's meant by "gradual dependent types".</p>
       <h2 id="extensions">extensions</h2>
       <p>The last example showing the even square function uses an extension which is defined as:</p>
       <pre><code>Class Even (x : N) := even_proof : N.even x = true.
