@@ -41,7 +41,7 @@ typed_square 123.      (* 15129%N *)</code></pre>
 gradual_square 2048.   (* 4194304%N *)
 gradual_square 123.    (* rejected *)</code></pre>
       <h2 id="extensions">extensions</h2>
-      <p>The last example showing the gradual approach to typing programs includes an extension that was made to the underlying program which is definable as:</p>
+      <p>The last example showing the gradual approach to typing programs uses an extension to the underlying program which is defined as:</p>
       <pre><code>Class Even (x : N) := even_proof : N.even x = true.
 #[export] Hint Extern 1 (Even _) =&gt; exact eq_refl : typeclass_instances.</code></pre>
       <p>Soma started as a fork of Rocq, inheriting its <a href="https://rocq-prover.org/doc/v9.2/refman/addendum/type-classes.html">proof search</a> and <a href="https://rocq-prover.org/doc/V9.2.0/refman/user-extensions/syntax-extensions.html#rocq:cmd.Notation">metaprogramming</a> features. Another capability is being able to modify the syntax itself; you can write in lisp if that's your vibe!</p>
@@ -319,9 +319,9 @@ Fixpoint forms (n fuel : nat) (ts : list token) : list item :=
 Reader lisp text :=
   let ts := tokens (chars text) 0 0 0 nil in
   forms (Succ (List.length ts)) (Succ (Succ (2 * List.length ts))) ts.</code></pre>
-  </details>
-      <h2 id="expectations">expectations</h2>
-      <p>Obviously, importantly, we want to write programs that are sound</p>
+       </details>
+       <h2 id="expectations">expectations</h2>
+       <p>To ensure programs follow certain properties, expectations can also be written about soma programs.</p>
     </div>
   </body>
 </html>
