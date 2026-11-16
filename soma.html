@@ -57,7 +57,7 @@ gradual_square 123.    (* rejected *)</code></pre>
       <pre><code>Class Even (x : N) := even_proof : N.even x = true.
 #[export] Hint Extern 1 (Even _) =&gt; exact eq_refl : typeclass_instances.</code></pre>
       <p>Soma started as a fork of Rocq, inheriting its <a href="https://rocq-prover.org/doc/v9.2/refman/addendum/type-classes.html">proof search</a> and <a href="https://rocq-prover.org/doc/V9.2.0/refman/user-extensions/syntax-extensions.html#rocq:cmd.Notation">metaprogramming</a> features. Another capability is being able to modify the syntax itself; you can write in lisp if that's your vibe!</p>
-      <pre><code>#lang lisp
+      <pre><code class="language-soma-lisp">#lang lisp
 ; Lisp, read by the reader in lisp.ext: each form below is a Soma
 ; definition or term, checked and evaluated as if written in Soma.
 
@@ -86,7 +86,7 @@ gradual_square 123.    (* rejected *)</code></pre>
 (if (&lt; 1 2) "less" "not less")               ; "less"</code></pre>
       <details>
 	<summary>Source for the above&#39;s syntax</summary>
-	<pre><code>(** A reader of s-expressions: lisp.soma starts with [#lang lisp], so
+	<pre><code class="language-soma">(** A reader of s-expressions: lisp.soma starts with [#lang lisp], so
 the rest of it is read by [lisp], below, not by Soma's parser
 (GRADUAL.md, "Readers"). The reader turns each top-level form into a
 Soma definition or term:
@@ -334,7 +334,7 @@ Soma definition or term:
       <h2 id="expectations">expectations</h2>
       <p>When writing programs, there are some properties you care about and some that you don&apos;t mind being modified (you may have an external API with an exact schema but you don&apos;t care if data is stored locally in DuckDB or Mongo).</p>
       <p>Taken from an <a href="https://github.com/rococompute/soma/blob/gradual/examples/example_projects/sexp_html/pages/pages.exp">example web application</a>, we have the expectation clicking on the counter always monotonously increases.</p>
-      <pre><code>(** So the state of any app of pages/ is strictly increasing: there is no
+      <pre><code class="language-soma">(** So the state of any app of pages/ is strictly increasing: there is no
     click after which it is as it was, or less. *)
 Theorem strictly_increasing : forall view clicks a,
   state_after (counter_app view) clicks &lt; state_after (counter_app view) (clicks ++ [a]).

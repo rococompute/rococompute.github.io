@@ -9,10 +9,17 @@
   like this one only colours what it can see: comments, strings, keywords,
   definitions, numbers and scopes.
 
+  It also registers soma-lisp: the s-expressions of Soma's lisp reader (a
+  file starting with `#lang lisp`), with its forms define, define-any,
+  lambda, if, let and match.
+
   In a page:  <script src="highlight.min.js"></script>
               <script src="/js/soma.js"></script>
               <pre><code class="language-soma">...</code></pre>
-  In Node:    hljs.registerLanguage('soma', require('./soma.js'))
+              <pre><code class="language-soma-lisp">...</code></pre>
+  In Node:    var soma = require('./soma.js')
+              hljs.registerLanguage('soma', soma)
+              hljs.registerLanguage('soma-lisp', soma.lisp)
 */
 (function () {
   function soma(hljs) {
@@ -68,6 +75,14 @@
       relevance: 5
     };
 
+    // Waterproof's proof sentences: Take x : T. By h, it suffices to show
+    // that ... We conclude that ...
+    var SENTENCE = {
+      scope: 'keyword',
+      begin: /\b(?:Take|Assume that|We conclude that|We need to show that|it suffices to show that|It suffices to show that)\b|(?<=^[ \t]*)By\b/,
+      relevance: 0
+    };
+
     return {
       name: 'Soma',
       aliases: ['soma'],
@@ -98,6 +113,7 @@
       contains: [
         COMMENT,
         STRING,
+        SENTENCE,
         NAMED,
         BARE_DEFINITION,
         QUALIFIED,
@@ -108,9 +124,41 @@
     };
   }
 
+  // Soma's lisp reader: an atom is anything but spaces, parentheses, quotes
+  // and semicolons, so make-adder and define-any are one word each.
+  function somaLisp(hljs) {
+    var ATOM = /[^\s()";]+/;
+    return {
+      name: 'Soma lisp',
+      aliases: ['soma-lisp'],
+      keywords: {
+        $pattern: ATOM,
+        keyword: ['define', 'define-any', 'lambda', 'if', 'let', 'match'],
+        built_in: ['list', 'cons'],
+        literal: ['#t', '#f', 'Succ', '_']
+      },
+      contains: [
+        // #lang lisp: the line that picks the reader
+        { scope: 'meta', begin: /^#lang\b.*$/ },
+        hljs.COMMENT(';', '$'),
+        { scope: 'string', begin: '"', end: '"', contains: [hljs.BACKSLASH_ESCAPE] },
+        // (define (square x) ...), (define-any (countdown n) ...), (define add-ten ...)
+        {
+          begin: [/\(/, /define(?:-any)?/, /\s+\(?/, ATOM],
+          beginScope: { 2: 'keyword', 4: 'title.function' }
+        },
+        { scope: 'number', begin: /(?<![^\s()])\d+(?![^\s()])/, relevance: 0 },
+        // + - * / = < <= in a call's head
+        { scope: 'operator', begin: /(?<=\()(?:<=|[-+*\/=<])(?=[\s)])/, relevance: 0 }
+      ]
+    };
+  }
+
   if (typeof module !== 'undefined' && module.exports) {
+    soma.lisp = somaLisp;
     module.exports = soma;
   } else if (typeof hljs !== 'undefined') {
     hljs.registerLanguage('soma', soma);
+    hljs.registerLanguage('soma-lisp', somaLisp);
   }
 })();
