@@ -334,7 +334,7 @@
       </details>
       <h2 id="expectations">expectations</h2>
       <p>When writing programs, there are some properties you care about and some that you don&apos;t mind being modified (you may have an external API with an exact schema but you don&apos;t care if data is stored locally in DuckDB or Mongo).</p>
-      <p>Taken from an example web application, we have the following expectation clicking on the counter always has monotonously increasing behavior.</p>
+      <p>Taken from an <a href="https://github.com/rococompute/soma/blob/gradual/examples/example_projects/sexp_html/pages/pages.exp">example web application</a>, we have the following expectation clicking on the counter always has monotonously increasing behavior.</p>
       <pre><code>(** So the state of any app of pages/ is strictly increasing: there is no
     click after which it is as it was, or less. *)
 Theorem strictly_increasing : forall view clicks a,
