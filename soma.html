@@ -37,10 +37,10 @@ gradually_typed_square 123 eq_refl.    (* rejected: 123 isn't even *)</code></pr
       <pre><code class="language-soma">Class Even (x : N) := even_proof : N.even x = true.
 #[export] Hint Extern 1 (Even _) =&gt; exact eq_refl : typeclass_instances.
 
-even_square (x : N) `{Even x} : N := x * x.
+gradually_typed_square (x : N) `{Even x} : N := x * x.
 
-even_square 2048.      (* 4194304%N *)
-even_square 123.       (* rejected: no instance for "Even 123" *)</code></pre>
+gradually_typed_square 2048.           (* 4194304%N *)
+gradually_typed_square 123.            (* rejected: no instance for "Even 123" *)</code></pre>
       <p>Either way the proof is found at compile time, so <code>x</code> has to be known then, as a literal is. For a value that arrives at run time, the program checks <code>N.even x</code> first and passes that check along as the proof.</p>
     </div>
   </body>
