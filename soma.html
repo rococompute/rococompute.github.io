@@ -11,6 +11,13 @@
   <body>
     <div id="content">
       <h1><a href="/">rococompute</a> &gt; soma</h1>
+      <h2>content</h2>
+      <ul>
+	<li><a href="#language">language</a></li>
+	<li><a href="#proving">proving</a></li>
+	<li><a href="#customizing">customizing</a></li>
+      </ul>
+      <h2 id="language">language</h2>
       <p>Dynamically typed languages, where you don't need to tell the computer whether a variable is a number or a string, are good for expressiveness and readability. However, being sure of certain properties requires tools like static analysis in your application code or representing abstracted states with formal verification. Eventually, the repo looks less like the codification of business logic and gets a similar smell to a codebase with countless microservices, which defeats the original benefit of an expressivelanguage.</p>
       <p>On the other end of the typing spectrum, are dependently typed languages (some examples include Lean, Rocq, Agda, Idris, F*). While historically used for proving theorems in math, there's an important difference to the developer experience in static typed languages like. In languages like Rust or Haskell, once it compiles, the program accomplishes what was written. In dependently typed languages, once it compiles, the program implies a truthiness about the program that was written. In the past, this didn't go mainstream beyond academic applications due to the verbosity required.</p>
       <p>To redemy this, let's take a lesson from TypeScript and how JavaScript (even untyped!) works as valid TypeScript:</p>
@@ -28,7 +35,7 @@ square (-3)%Z.         (* gives a run-time error *)</code></pre>
       <pre><code class="language-soma">typed_square (x : N) : N := x * x.
 
 typed_square 123.      (* 15129%N *)</code></pre>
-      <p>Requiring the argument to be even catches more compile-time errors; being able to work with a type that's restrictive of the value itself is a benefit of dependent types. The body is still <code>x * x</code>, but the function now takes a second argument, <code>even</code>, a proof that <code>x</code> is even. Its type, <code>N.even x = true</code>, mentions the first argument's value. The caller supplies the proof: <code>eq_refl</code> is the proof that something equals itself, and the compiler may compute both sides first. <code>N.even 2048</code> computes to <code>true</code>, so <code>eq_refl</code> proves <code>true = true</code>; for 123 it would have to prove <code>false = true</code>, and the program is rejected.</p>
+      <p>Requiring the argument to be even catches more compile-time errors; being able to work with a type that's restrictive of the value itself is a benefit of dependent types.</p>
       <pre><code class="language-soma">gradually_typed_square (x : N) (even : N.even x = true) : N := x * x.
 
 gradually_typed_square 2048 eq_refl.   (* 4194304%N *)
@@ -42,6 +49,10 @@ gradually_typed_square (x : N) `{Even x} : N := x * x.
 gradually_typed_square 2048.           (* 4194304%N *)
 gradually_typed_square 123.            (* rejected: no instance for "Even 123" *)</code></pre>
       <p>Either way the proof is found at compile time, so <code>x</code> has to be known then, as a literal is. For a value that arrives at run time, the program checks <code>N.even x</code> first and passes that check along as the proof.</p>
+      <h2 id="proving">proving</h2>
+      <p></p>
+      <h2 id="customizing">customizing</h2>
+      <p></p>
     </div>
   </body>
 </html>
