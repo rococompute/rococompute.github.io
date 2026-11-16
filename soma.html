@@ -76,7 +76,7 @@ gradual_square 123.    (* rejected *)</code></pre>
 ; follow, so it is defined through fix_any: accepted, and listed by
 ; Soma's review as an escape hatch
 (define-any (countdown n)
-(if (= n 0) (list 0) (cons n (countdown (- n 1)))))
+ (if (= n 0) (list 0) (cons n (countdown (- n 1)))))
 (countdown 3)                                 ; [3, 2, 1, 0], as an Any
 
 (define (make-adder n) (lambda (x) (+ x n)))
