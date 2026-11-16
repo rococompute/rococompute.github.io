@@ -334,7 +334,7 @@
       </details>
       <h2 id="expectations">expectations</h2>
       <p>When writing programs, there are some properties you care about and some that you don&apos;t mind being modified (you may have an external API with an exact schema but you don&apos;t care if data is stored locally in DuckDB or Mongo).</p>
-      <p>Taken from an <a href="https://github.com/rococompute/soma/blob/gradual/examples/example_projects/sexp_html/pages/pages.exp">example web application</a>, we have the following expectation clicking on the counter always has monotonously increasing behavior.</p>
+      <p>Taken from an <a href="https://github.com/rococompute/soma/blob/gradual/examples/example_projects/sexp_html/pages/pages.exp">example web application</a>, we have the expectation clicking on the counter always monotonously increases.</p>
       <pre><code>(** So the state of any app of pages/ is strictly increasing: there is no
     click after which it is as it was, or less. *)
 Theorem strictly_increasing : forall view clicks a,
@@ -347,7 +347,7 @@ Proof.
     state_after (counter_app view) clicks &lt; state_after (counter_app view) clicks + 1.
   We conclude that state_after (counter_app view) clicks &lt; state_after (counter_app view) clicks + 1.
 Qed.</code></pre>
-      <p></p>
+      <p>With this set, any subsequent changes will be ensured by the expectation. For example, "Hey Claude, make an input so the user can say how much the total increases by" would be helped if the code written were to not check for negative inputs.</p>
     </div>
   </body>
 </html>
