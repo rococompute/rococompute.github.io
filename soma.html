@@ -68,8 +68,8 @@ gradual_square 123.    (* rejected *)</code></pre>
 ; Rocq's termination check accepts
 (define (fact n)
 (match n
-(0 1)
-((Succ m) (* n (fact m)))))
+ (0 1)
+ ((Succ m) (* n (fact m)))))
 (fact 5)                                      ; 120
 
 ; countdown calls itself on (- n 1), which the termination check can't
