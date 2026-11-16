@@ -50,3 +50,11 @@ p code {
     padding: 0 4px;
     border-radius: 3px;
 }
+
+.video-container {
+    width: 100%;
+}
+
+.video-container video {
+    width: 100%;
+}
