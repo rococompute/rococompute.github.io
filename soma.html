@@ -63,23 +63,23 @@ gradual_square 123.    (* rejected at compile-time *)</code></pre>
 #[export] Hint Extern 1 (Even _) =&gt; exact eq_refl : typeclass_instances.</code></pre>
       <p>Soma started as a fork of Rocq, inheriting its <a href="https://rocq-prover.org/doc/v9.2/refman/addendum/type-classes.html">proof search</a> and <a href="https://rocq-prover.org/doc/V9.2.0/refman/user-extensions/syntax-extensions.html#rocq:cmd.Notation">metaprogramming</a> features. Another capability is being able to modify the syntax itself; you can write in lisp if that's your vibe!</p>
       <pre><code class="language-soma-lisp">#lang lisp
-; Lisp, read by the reader in lisp.ext: each form below is a Soma
-; definition or term, checked and evaluated as if written in Soma.
+;; Lisp, read by the reader in lisp.ext: each form below is a Soma
+;; definition or term, checked and evaluated as if written in Soma.
 
 (define (square x) (* x x))
 (square 12)                                   ; 144
 
-; fact calls itself on m, a part of n: a Recursive definition, which
-; Rocq's termination check accepts
+;; fact calls itself on m, a part of n: a Recursive definition, which
+;; Rocq's termination check accepts
 (define (fact n)
  (match n
   (0 1)
   ((Succ m) (* n (fact m)))))
 (fact 5)                                      ; 120
 
-; countdown calls itself on (- n 1), which the termination check can't
-; follow, so it is defined through fix_any: accepted, and listed by
-; Soma's review as an escape hatch
+;; countdown calls itself on (- n 1), which the termination check can't
+;; follow, so it is defined through fix_any: accepted, and listed by
+;; Soma's review as an escape hatch
 (define-any (countdown n)
  (if (= n 0) (list 0) (cons n (countdown (- n 1)))))
 (countdown 3)                                 ; [3, 2, 1, 0], as an Any
