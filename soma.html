@@ -24,36 +24,41 @@
       <h1><a href="/">rococompute</a> &gt; soma</h1>
       <h2>content</h2>
       <ul>
+	<li><a href="#context">context</a></li>
 	<li><a href="#language">language</a></li>
 	<li><a href="#extensions">extensions</a></li>
 	<li><a href="#expectations">expectations</a></li>
       </ul>
+      <h2 id="context">context</h2>
+      <p>Dynamically typed languages, where you don't tell the computer whether a variable is a number or a string, are good for expressiveness and readability. However, being sure of certain behaviors requires tools like static analysis in your application code or representing abstracted states with formal verification. Eventually, the repo looks less like the codification of business logic and more like a salad of microservices, which defeats the original benefit of an expressive language.</p>
+      <p>On the other end of the typing spectrum, are dependently typed languages such as <a href="https://lean-lang.org/">Lean</a>, <a href="https://rocq-prover.org/">Rocq</a>, <a href="https://github.com/agda/agda">Agda</a>, <a href="https://idris-lang.org/">Idris</a>, <a href="https://fstar-lang.org/">F*</a>, <a href="https://github.com/bendlang/bend/blob/main/paper/BendTT.pdf">Bend</a>. While historically used for proving theorems in math, there's an important difference to the developer experience in statically typed languages. In Rust or Haskell, once whatever you wrote compiles, the program usually accomplishes what was intended. In dependently typed languages, once it compiles, the program implies a truthiness about the program that was written (hence why some have used swarms to get passing Lean proofs, it suggests a truth about the world if it didn&apos;t <a href="https://leodemoura.github.io/blog/2026-8-1-postmortem-for-kernel-soundness-bug-14576/">exploit a bug in the kernel</a>).</p>
+      <p>Where dependently typed languages have failed to enter mainstream programming can be reduced to two reasons. Firstly, the verbosity and concepts made for a steep learning curve (especially if you weren&apos;t from a formal math background); this is resolved by LLMs and coding agents. Second, there aren't many bridges between dependently typed languages and general purpose programming. At best, you were either verifying a different program (introducing "yet another language") or you were extracting into a different language to then be plugged into the code that&apos;s actually doing stuff.</p>
       <h2 id="language">language</h2>
-      <p>Dynamically typed languages, where you don't tell the computer whether a variable is a number or a string, are good for expressiveness and readability. However, being sure of certain properties requires tools like static analysis in your application code or representing abstracted states with formal verification. Eventually, the repo looks less like the codification of business logic and more like a salad of microservices, which defeats the original benefit of an expressive language.</p>
-      <p>On the other end of the typing spectrum, are dependently typed languages (some examples include Lean, Rocq, Agda, Idris, F*, <a href="https://github.com/bendlang/bend/blob/main/paper/BendTT.pdf">Bend</a>). While historically used for proving theorems in math, there's an important difference to the developer experience in statically typed languages. In Rust or Haskell, once it compiles, the program accomplishes what was written. In dependently typed languages, once it compiles, the program implies a truthiness about the program that was written (hence why some have used swarms to get passing Lean proofs, it suggests a truth about the world if it didn&apos;t exploit a bug in the kernel). In the past, this didn&apost commonly go beyond academic applications due to the verbosity required.</p>
-      <p>To redemy this, let's take a lesson from TypeScript and how JavaScript (even untyped!) works as valid TypeScript:</p>
+      <p>Let's start by noticing a feature from TypeScript where, by being a <a href="https://education.launchcode.org/intro-to-web-dev-curriculum/modern-js/reading/supersets/index.html">superset</a> of JavaScript, vanilla JavaScript is valid TypeScript:</p>
       <pre><code class="language-typescript">// valid TypeScript
-const f = x =&gt; x * x;
+const square = x =&gt; x * x;
 
 // also valid TypeScript
-const g = (x: number): number =&gt; x * x;</code></pre>
-      <p>With dependent types, this looks like (<b>N</b> references <a href="https://en.wikipedia.org/wiki/Natural_number">natural numbers</a> and <b>Z</b> references <a href="https://en.wikipedia.org/wiki/Integer">integers</a>):</p>
+type MathOperation = (value: number) => number;
+const square: MathOperation = (x: number): number =&gt; x * x;</code></pre>
+      <p>In Soma, this can start by looking like (<code>N</code> references <a href="https://en.wikipedia.org/wiki/Natural_number">natural numbers</a> and <code>Z</code> references <a href="https://en.wikipedia.org/wiki/Integer">integers</a>):</p>
       <pre><code class="language-soma">square (x : Any) : N := x * x.
 
 square 12%N.           (* 144%N *)
 square (-3)%Z.         (* gives a run-time error *)</code></pre>
-      <p>Specifying the argument to be a natural number turns <code>square (-3)%Z</code> into instead a compile-time error.</p>
+      <p>Specifying the argument <code>x</code> to be a natural number instead of <code>Any</code> turns the line <code>square (-3)%Z</code> into a compile-time error.</p>
       <pre><code class="language-soma">typed_square (x : N) : N := x * x.
 
-typed_square 123.      (* 15129%N *)</code></pre>
+typed_square 123.      (* 15129%N *)
+typed_square (-3)%Z.   (* rejected at compile-time *)</code></pre>
       <p>Requiring the argument to be even catches more compile-time errors; being able to work with a type that's restrictive of the value itself is a benefit of dependent types.</p>
       <pre><code class="language-soma">gradual_square (x : N) `{Even x} : N := x * x.
 
 gradual_square 2048.   (* 4194304%N *)
-gradual_square 123.    (* rejected *)</code></pre>
+gradual_square 123.    (* rejected at compile-time *)</code></pre>
       <p>As you can see, we were able to incrementally specify what the program was doing from squaring an arbitrary value to squaring a number that&apos;s <i>even</i>; this is what's meant by "gradual dependent types".</p>
       <h2 id="extensions">extensions</h2>
-      <p>The last example showing the even square function uses an extension which is defined as:</p>
+      <p>The last example showing the <code>gradual_square</code> function is accomplishable after defining an extension for the <code>Even</code> class which can look like:</p>
       <pre><code>Class Even (x : N) := even_proof : N.even x = true.
 #[export] Hint Extern 1 (Even _) =&gt; exact eq_refl : typeclass_instances.</code></pre>
       <p>Soma started as a fork of Rocq, inheriting its <a href="https://rocq-prover.org/doc/v9.2/refman/addendum/type-classes.html">proof search</a> and <a href="https://rocq-prover.org/doc/V9.2.0/refman/user-extensions/syntax-extensions.html#rocq:cmd.Notation">metaprogramming</a> features. Another capability is being able to modify the syntax itself; you can write in lisp if that's your vibe!</p>
