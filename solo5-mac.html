@@ -1,12 +1,44 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>pantheon</title>
+    <title>solo5-mac</title>
     <link rel="stylesheet" href="/styles.css" />
+    <style>
+      h2, h3, h4 {
+	  align-self: flex-start;
+	  margin-left: calc(max(50vw - 425px, 0px));
+      }
+
+      ul {
+	  align-self: flex-start;
+	  margin-left: calc(max(50vw - 400px, 0px));
+      }
+    </style>
   </head>
   <body>
     <div id="content">
-      <h1>utilities for MirageOS on mac</h1>
+      <h1><a href="/">rococompute</a> &gt; solo5-mac</h1>
+      <h2>content</h2>
+      <ul>
+	<li><a href="#tldr">tldr</a></li>
+	<li><a href="#unikernels">unikernels</a></li>
+      </ul>
+      <h2 id="tldr">tldr</h2>
+      <p>In order to leverage <a href="https://mirage.io/">MirageOS</a> unikernels, some changes were needed to <a href="https://github.com/Solo5/solo5">solo5</a> (a secure environment for running unikernels) to work on an ARM-based Macbook. The rest of this page explains what and why unikernels as well as how it ties into the <a href="/">rococompute</a> stack.</p>
+      <h2 id="unikernels">unikernels</h2>
+      <p>Instead of inventing a new analogy, I'm going to go and quote a well-written description from <a href="https://uniker.nl/introduction/">Mirage&apos;s new website</a>.</p>
+      <blockquote>
+	<p>When developing an application, we usually rely on a standard interface (commonly known as the POSIX interface) provided by the operating system to interact with hardware devices. In this classic architecture, only the OS kernel has direct access to the physical hardware; it decides how to schedule resources among programs so they can run simultaneously without conflicting with one another.</p>
+	<p>The main advantage of this setup is portability: since POSIX is widely supported, the same code can theoretically run on Linux, FreeBSD, or macOS. However, each system still has its own quirks and subtle differences. Furthermore, because POSIX is designed for general-purpose computing, it includes a massive amount of software features that a specific application might never actually need.</p>
+	<p>While this abstraction makes software development easier, it comes at the cost of specialization. Developers are forced to include large blocks of unused code by default which not only wastes resources, but also expands the overall attack surface for security threats.</p>
+	<p>This is where unikernels emerge as a radical alternative: the application effectively becomes the kernel. There is no longer any separation between the user space and the OS. The application is the only process running within an isolated environment, interacting with virtual devices provided by a hypervisor. A unikernel is therefore a hyper-specialized operating system whose sole purpose is to run your specific application, and nothing else.</p>
+      </blockquote>
+      <p>Visually, compared to virtual machines or containers, unikernels look like this:</p>
+      <img src="/images/vms-containers-unikernels.png" />
+      <p>When you make an application in a container or virtual machine more secure, you have to sift through dependencies as well as things which are hidden (ie <a href="https://arstechnica.com/security/2026/11/vulnerability-allows-attackers-to-log-into-some-linux-devices-sans-password/">what settings does your ssh service have?</a>). Pinning package versions or <a href="https://www.nist.gov/standardsgov/compliance-faqs-federal-information-processing-standards-fips">whitelisting certain accepted tools</a> all fit under the paradigm of "top-down securitization" whereas unikernels, by requiring every system capabality be explicitly included, fall more under "bottom-up securitization".</p>
+      <h2 id="verified security">verified security</h2>
+      <p>The justification behind having <a href="/soma.html">Soma</a> start as a fork of Rocq is that Rocq itself is written in OCaml, meaning plugging in tools such as MirageOS (it itself an OCaml project) can be more a native feature of the stack instead of a separate tool incorporated with "yet another language".</p>
+      <p>In conjunction with a <a href="/soma.html#context">dependently typed language</a>, the goal is to fully verify the code-generated products (namely applications running in unikernels) instead of augmenting formal verification to existing tools. Standing on top of the shoulders of giants (ie <a href="https://reasonml.github.io/">ReasonML</a>), Soma can eventually be a verifiable isomorphic programming framework.</p>
     </div>
   </body>
 </html>

@@ -58,3 +58,7 @@ p code {
 .video-container video {
     width: 100%;
 }
+
+blockquote {
+    border-left: 2px solid lightgrey;
+}
