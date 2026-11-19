@@ -24,11 +24,14 @@
       <h1><a href="/">rococompute</a> &gt; soma</h1>
       <h2>content</h2>
       <ul>
+	<li><a href="#just-give-me-the-github">Just give me the GitHub</a></li>
 	<li><a href="#context">context</a></li>
 	<li><a href="#language">language</a></li>
 	<li><a href="#extensions">extensions</a></li>
 	<li><a href="#expectations">expectations</a></li>
       </ul>
+      <h2 id="just-give-me-the-github">Just give me the GitHub</h2>
+      <h4><a href="https://github.com/rococompute/soma">Here you go</a></h4>
       <h2 id="context">context</h2>
       <p>Dynamically typed languages, where you don't tell the computer whether a variable is a number or a string, are good for expressiveness and readability. However, being sure of certain behaviors requires tools like static analysis in your application code or representing abstracted states with formal verification. Eventually, the repo looks less like the codification of business logic and more like a salad of microservices, which defeats the original benefit of an expressive language.</p>
       <p>On the other end of the typing spectrum, are dependently typed languages such as <a href="https://lean-lang.org/">Lean</a>, <a href="https://rocq-prover.org/">Rocq</a>, <a href="https://github.com/agda/agda">Agda</a>, <a href="https://idris-lang.org/">Idris</a>, <a href="https://fstar-lang.org/">F*</a>, <a href="https://github.com/bendlang/bend/blob/main/paper/BendTT.pdf">Bend</a>. While historically used for proving theorems in math, there's an important difference to the developer experience in statically typed languages. In Rust or Haskell, once whatever you wrote compiles, the program usually accomplishes what was intended. In dependently typed languages, once it compiles, the program implies a truthiness about the program that was written (hence why some have used swarms to get passing Lean proofs, it suggests a truth about the world if it didn&apos;t <a href="https://leodemoura.github.io/blog/2026-8-1-postmortem-for-kernel-soundness-bug-14576/">exploit a bug in the kernel</a>).</p>
